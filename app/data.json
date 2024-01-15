@@ -1,0 +1,98 @@
+
+
+  [
+    {
+      "title": "Ansell",
+      "imgName": "/backpack1.jpeg",
+      "img2": "/backpack1B.jpeg",
+      "detail": "backpacking backpack",
+      "price": "$220"
+    },
+    {
+      "title": "Fairland",
+      "imgName": "/backpack2.jpeg",
+      "img2": "/backpack2B.jpeg",
+      "detail": "backpacking backpack",
+      "price": "$260"
+    },
+    {
+      "title": "Kamut",
+      "imgName": "/poles1.jpeg",
+      "img2": "/poles1B.jpeg",
+      "detail": "trekking poles",
+      "price": "$130"
+    },
+    {
+      "title": "Packard",
+      "imgName": "/poles2.jpeg",
+      "img2": "/poles2B.jpeg",
+      "detail": "trekking poles",
+      "price": "$145"
+    },
+    {
+      "title": "Raddatz",
+      "imgName": "/bags.jpeg",
+      "img2": "/sackB.jpeg",
+      "detail": "stuff sacks",
+      "price": "$34"
+    },
+    {
+      "title": "Hale",
+      "imgName": "/chair.jpeg",
+      "img2": "/chairB.jpeg",
+      "detail": "camp chair",
+      "price": "$34"
+    },
+    {
+      "title": "Innes",
+      "imgName": "/headlamp.jpeg",
+      "img2": "/headlampB.jpeg",
+      "detail": "headlamp",
+      "price": "$34"
+    },
+    {
+      "title": "Gadsden",
+      "imgName": "/gps.jpeg",
+      "img2": "/gpsB.jpeg",
+      "detail": "gps unit",
+      "price": "$34"
+    },
+    {
+      "title": "Halifax",
+      "imgName": "/hydration.jpeg",
+      "img2": "/hydrationB.jpeg",
+      "detail": "hydration system",
+      "price": "$34"
+    },
+    {
+      "title": "Palmer",
+      "imgName": "/pad.jpeg",
+      "img2": "/padB.jpeg",
+      "detail": "sleeping pad",
+      "price": "$34"
+    },
+    {
+      "title": "Sabinal",
+      "imgName": "/stove.jpeg",
+      "img2": "/stoveB.jpeg",
+      "detail": "cook stove",
+      "price": "$34"
+    },
+    {
+      "title": "Lamoka",
+      "imgName": "/tent1.jpeg",
+      "img2": "/tent2B.jpeg",
+      "detail": "backpacking tent",
+      "price": "$34"
+    },
+    {
+      "title": "Naknek",
+      "imgName": "/tent2.png",
+      "img2": "/tent1B.png",
+      "detail": "backpacking tent",
+      "price": "$34"
+    }
+  ]
+
+
+
