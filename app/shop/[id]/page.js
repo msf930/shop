@@ -15,7 +15,7 @@ export default function Page() {
     const [productData, setProductData] = useState({});
     const [variantData, setVariantData] = useState([]);
     const [variantImageData, setVariantImageData] = useState([]);
-    const [colorData, setColorData] = useState([]);
+    const [contentData, setContentData] = useState([]);
     const [colorIndex, setColorIndex] = useState(0);
 
 
@@ -72,10 +72,25 @@ export default function Page() {
         fetchVariantImageData();
     }, [id,colorIndex]);
 
+    useEffect(() => {
+        const fetchContentData = async () => {
+            try {
+                const response = await fetch(`https://xx2b8ubw.api.sanity.io/v2021-10-21/data/query/production?query=*%5B_id%20%3D%3D%20"${id}"%5D`);
+                const result = await response.json();
+
+                setContentData(result.result[0].content);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchContentData();
+    }, [id]);
 
 
 
-console.log(imagesURLArr);
+
+console.log(productData);
 
 
 
@@ -93,24 +108,26 @@ console.log(imagesURLArr);
                 <div className="productInfo">
                     <h1> {productData.title}</h1>
                     <h2> {productData.detail}</h2>
-                    <h2> {productData.price}</h2>
+                    <h2> ${productData.price}.00</h2>
 
                     <div className="productRatingContainer">
-                        {/*<StarRatings*/}
-                        {/*    rating={getRandomInt(3,5)}*/}
-                        {/*    starRatedColor="#ADA18F"*/}
-                        {/*    starEmptyColor="#CFC7BC"*/}
-                        {/*    numberOfStars={5}*/}
-                        {/*    name='rating'*/}
-                        {/*    starDimension="15px"*/}
-                        {/*    starSpacing="2px"*/}
-                        {/*/>*/}
+                        <StarRatings
+                            rating={getRandomInt(3,5)}
+                            starRatedColor="#ADA18F"
+                            starEmptyColor="#CFC7BC"
+                            numberOfStars={5}
+                            name='rating'
+                            starDimension="15px"
+                            starSpacing="2px"
+                        />
                         <div>(23)</div>
                     </div>
 
 
 
-                    <h2> {colorsArr[colorIndex]}</h2>
+                    <h2 style={{textTransform: 'capitalize'}}>
+                        Color: {colorsArr[colorIndex]}
+                    </h2>
 
                     <div className="colorContainer">
                         {variantData.map((color, index) => (
@@ -134,15 +151,15 @@ console.log(imagesURLArr);
             </div>
             <div className="ptContainer">
 
-                {/*<div className="ptArea">*/}
-                {/*    <PortableText*/}
-                {/*        content={product.content}*/}
-                {/*        serializers={{*/}
-                {/*            ul: ({ children }) => <ul className="ptUL">{children}</ul>,*/}
-                {/*            li: ({ children }) => <li className="ptLI">{children}</li>*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*</div>*/}
+                <div className="ptArea">
+                    <PortableText
+                        content={contentData}
+                        serializers={{
+                            ul: ({ children }) => <ul className="ptUL">{children}</ul>,
+                            li: ({ children }) => <li className="ptLI">{children}</li>
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -137,7 +137,7 @@ async function getProducts(){
     const QUERY = encodeURIComponent(`*[_type == "products"]`);
 
     const URL = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${QUERY}`;
-    console.log(URL);
+
     const products = await fetch(URL);
 
 

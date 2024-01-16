@@ -12,10 +12,10 @@ export default async function ShopPagination({ products }){
             {products.length > 0 &&
                 products.map((item, i) => (
                     <div key={i}>
-                        <Link
-                            href={`/shop/${encodeURIComponent(item._id)}`}
-                        >
+
                             <ShopItem
+                                link={`/shop/${encodeURIComponent(item._id)}`}
+                                variants={item.productVariants}
                                 img1={item.img1}
                                 img2={item.img2}
                                 title={item.title}
@@ -24,7 +24,7 @@ export default async function ShopPagination({ products }){
                                 rank={item.rank}
                                 special={item.special}
                             />
-                        </Link>
+
                     </div>
                 ))
             }

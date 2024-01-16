@@ -14,7 +14,7 @@ export default function ImageHandler(props){
     return (
         <div>
             <img
-                src={img1URL}
+                src={props.imgName}
                 alt={props.title}
             />
         </div>
