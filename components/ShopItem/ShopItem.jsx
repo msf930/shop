@@ -15,8 +15,7 @@ export default function ShopItem(props)  {
     const [colorIndex, setColorIndex] = useState(0);
 
     //get image ref names
-    const img1RefName = props.img1.asset._ref;
-    const img2RefName = props.img2.asset._ref;
+
 
     //get random number for rating
     const getRandomInt = (min, max) => {
@@ -24,25 +23,34 @@ export default function ShopItem(props)  {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min) + min);
     }
-    const randomReviewCount = getRandomInt(1, 30);
-    const randomRank = getRandomInt(3.00,5.00);
-    const randomSale = getRandomInt(15,30);
+    const randomReviewCount = 25;
+    const randomRank = 4;
+    const randomSale = 20;
 
     const id = props.id;
     const colorArr = getColors(props.variants);
     const imgObjArr = getImageObj(props.variants);
     const imgRefArr = getImages(imgObjArr[colorIndex])
-    const imgURLArr = URLArrGen(imgRefArr);
+    const imgURLArr = URLArrGen(imgRefArr[0]);
 
 
 
 
 
 
- console.log(colorIndex);
+ console.log(imgRefArr);
     return (
         <div>
             <div className="shopItemContainer">
+                <div className="newTagContainer">
+                    {props.new
+                        ?
+                        <p className="newTagContent">New Arrival</p>
+                        :
+                        <div></div>
+                    }
+
+                </div>
                 <div className="shopItemImageContainer">
                     <Link href={props.link}>
                         <div className="image1">
@@ -108,7 +116,13 @@ export default function ShopItem(props)  {
                 </div>
 
                 <div className="saleTagContainer">
-                    <p className="saleTagContent">Sale {randomSale}%</p>
+                    {props.special
+                        ?
+                        <p className="saleTagContent">Sale {randomSale}%</p>
+                        :
+                        <div></div>
+                    }
+
                 </div>
             </div>
         </div>
@@ -154,16 +168,18 @@ function getImages(data){
     data.map((item, i) => (
         dataArr.push(item)
     ))
-    const imgObj = dataArr[0];
+    const imgObj = dataArr.filter(Array.isArray);
     const imgObjObj =
         imgObj.map((item,i) => (
             Object
                 .keys(item)
                 .map(k => item[k])
         ))
-    const arr = [];
+    const arr =
     imgObjObj.map((item, i) => (
-        arr.push(item[2]._ref)
+        Object
+            .keys(item)
+            .map(k => item[k].asset._ref)
     ))
 
     return arr;

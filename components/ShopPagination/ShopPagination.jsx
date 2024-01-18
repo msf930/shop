@@ -23,6 +23,7 @@ export default async function ShopPagination({ products }){
                                 price={item.price}
                                 rank={item.rank}
                                 special={item.special}
+                                new={item.new}
                             />
 
                     </div>

@@ -251,6 +251,18 @@ a {
 .shopItemImageContainer:hover .image2{
     opacity: 1;
 }
+.newTagContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.newTagContent{
+    background-color: #ADA18F;
+    color: black;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 0 0 5px 0;
+}
 
 /*@keyframes scaleUpDown {*/
 /*    0%, 100% {*/
@@ -369,8 +381,27 @@ a {
     height: 100%;
     overflow-y: auto;
 }
-.projectTop{
-    height: 200px;
+.productTop{
+    height: 120px;
+    background-color: #ADA18F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+.productTopBtn{
+    position: absolute;
+    left: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+.productTopIcon{
+    rotate: 270deg;
+}
+.productTopBtnText{
+    padding-left: 5px;
 }
 .productContainer{
     display: grid;
@@ -442,17 +473,118 @@ a {
     width: auto;
 }
 .productInfo{
-
+    padding-right: 200px;
+    padding-left: 60px;
+}
+.productInfo h1{
+    font-size: 3em;
+}
+.productInfoDivider{
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.productDescription{
+    color: #5C5140;
+}
+.priceRatingContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.price{
+    font-size: 2em;
+    color: #5C5140;
 }
 .productRatingContainer{
     display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 
+}
+.productRatingContainer p{
+    padding-top: 3px;
 }
 .colorContainer{
     display: flex;
 }
+.buyBtnContainer{
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
 
-
+}
+.buyBtn{
+    width: 80%;
+    background-color: #5C5140;
+    color: white;
+    padding: 10px;
+}
+.reviewContainer{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.reviewHeader{
+    display: flex;
+    justify-content: space-between;
+}
+.reviewHeaderCount{
+    align-self: flex-start;
+}
+.reviewHandlerContainer{
+    display: flex;
+}
+.reviewProfile{
+    display: flex;
+    width: 250px;
+    padding-top: 10px;
+}
+.profileText{
+    margin-left: 10px;
+}
+.profileText h1{
+    font-size: 20px;
+    text-transform: capitalize;
+}
+.profileText p{
+    font-weight: bold;
+}
+.userIcon{
+    width: 50px;
+    height: 50px;
+    background-color: #5C5140; /* Set the background color */
+    border-radius: 50%; /* Make it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff; /* Set the text color */
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.ratingDateContainer{
+    display: flex;
+    width: 750px;
+    justify-content: space-between;
+}
+.commentDate{
+    align-self: flex-end;
+}
+.commentBody{
+    margin-top: 15px;
+    width: 650px;
+}
+.commentBody h1{
+    font-size: 20px;
+}
+.commentBody p{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .ptContainer{
     position: relative;
     width: 500px;

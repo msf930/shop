@@ -5,7 +5,10 @@ import { usePathname } from 'next/navigation'
 import PortableText from "react-portable-text"
 import SwiperHandler from "@/components/SwiperHandler/SwiperHandler";
 import StarRatings from "react-star-ratings/build/star-ratings";
-
+import ARCHER from '../../../public/ARCHER.png';
+import Image from "next/image";
+import { LiaLocationArrowSolid } from "react-icons/lia";
+import CommentHandler from "@/components/CommentHandler/CommentHandler";
 
 
 
@@ -16,7 +19,16 @@ export default function Page() {
     const [variantData, setVariantData] = useState([]);
     const [variantImageData, setVariantImageData] = useState([]);
     const [contentData, setContentData] = useState([]);
+    const [descriptionData, setDescriptionData] = useState("");
+    const [reviewData, setReviewData] = useState([]);
+    const [postData, setPostData] = useState([]);
+
     const [colorIndex, setColorIndex] = useState(0);
+
+    const [randomNum, setRandomNum] = useState(0);
+    const [randomReviews, setRandomReviews] = useState(0);
+
+    const [loading, setLoading] = useState(true);
 
 
     const pathname = usePathname();
@@ -25,7 +37,8 @@ export default function Page() {
     const imagesURLArr = URLArrGen(imagesData);
     const colorsArr = getColors(variantData);
 
-    //const productImages = getVariantImages(productVariants);
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,20 +100,94 @@ export default function Page() {
         fetchContentData();
     }, [id]);
 
+    useEffect(() => {
+        const fetchDescriptionData = async () => {
+            try {
+                const response = await fetch(`https://xx2b8ubw.api.sanity.io/v2021-10-21/data/query/production?query=*%5B_id%20%3D%3D%20"${id}"%5D`);
+                const result = await response.json();
+
+                setDescriptionData(result.result[0].description);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDescriptionData();
+    }, [id]);
+
+    useEffect(() => {
+        const getRandomNum = () => {
+            setLoading(true);
+            const num = getRandomInt(3,5);
+            const float = getRandomFloat();
+            const total = num + float;
+            setRandomNum(total);
+            setLoading(false);
+        };
+
+        getRandomNum();
+    }, []);
+
+    useEffect(() => {
+        const getRandomRatingCount = () => {
+            const num = getRandomInt(1,29);
+            setRandomReviews(num);
+        };
+        getRandomRatingCount();
+    }, []);
+
+    useEffect(() => {
+        const fetchReviewData = async () => {
+            try {
+                const response = await fetch("https://dummyjson.com/comments");
+                const result = await response.json();
+
+                setReviewData(result.comments.slice(0, 30 - randomReviews));
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchReviewData();
+    }, [randomReviews]);
+
+    useEffect(() => {
+        const fetchCommentData = async () => {
+            try {
+                const response = await fetch("https://dummyjson.com/posts");
+                const result = await response.json();
+
+                setPostData(result.posts.slice(0, 30 - randomReviews));
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchCommentData();
+    }, [randomReviews]);
 
 
 
-console.log(productData);
+
+// console.log(reviewData);
 
 
 
     return (
         <div className="productPage">
-
-            <div>
-                <div className="projectTop"></div>
-
-            </div>
+                <div className="productTop">
+                    <a className="productTopBtn" href="/#t2">
+                        <LiaLocationArrowSolid className="productTopIcon"/>
+                        <p className="productTopBtnText">Back to Shop</p>
+                    </a>
+                    <Image
+                        src={ARCHER}
+                        alt="logo"
+                        height={100}
+                        width={100}
+                    >
+                    </Image>
+                </div>
             <div className="productContainer">
                 <div className="shopImgContainer">
                     <SwiperHandler swiperArr = {imagesURLArr}/>
@@ -108,23 +195,31 @@ console.log(productData);
                 <div className="productInfo">
                     <h1> {productData.title}</h1>
                     <h2> {productData.detail}</h2>
-                    <h2> ${productData.price}.00</h2>
-
-                    <div className="productRatingContainer">
-                        <StarRatings
-                            rating={getRandomInt(3,5)}
-                            starRatedColor="#ADA18F"
-                            starEmptyColor="#CFC7BC"
-                            numberOfStars={5}
-                            name='rating'
-                            starDimension="15px"
-                            starSpacing="2px"
-                        />
-                        <div>(23)</div>
+                    <hr className="productInfoDivider"/>
+                    <p className="productDescription">{descriptionData}</p>
+                    <hr className="productInfoDivider"/>
+                    <div className="priceRatingContainer">
+                        <h2 className="price"> ${productData.price}.00</h2>
+                        {!loading
+                            ? <div className="productRatingContainer">
+                                <StarRatings
+                                    rating={randomNum}
+                                    starRatedColor="#5C5140"
+                                    starEmptyColor="#CFC7BC"
+                                    numberOfStars={5}
+                                    name='rating'
+                                    starDimension="20px"
+                                    starSpacing="2px"
+                                />
+                                <p>{randomNum} |</p>
+                                <p>{30 - randomReviews} reviews</p>
+                            </div>
+                            :
+                            <div></div>
+                        }
                     </div>
 
-
-
+                    <hr className="productInfoDivider"/>
                     <h2 style={{textTransform: 'capitalize'}}>
                         Color: {colorsArr[colorIndex]}
                     </h2>
@@ -146,42 +241,38 @@ console.log(productData);
                             ></button>
                         ))}
                     </div>
-
+                    {/*<hr className="productInfoDivider"/>*/}
+                    <div className="buyBtnContainer">
+                        <button className="buyBtn">Buy Now</button>
+                    </div>
                 </div>
             </div>
-            <div className="ptContainer">
-
-                <div className="ptArea">
-                    <PortableText
-                        content={contentData}
-                        serializers={{
-                            ul: ({ children }) => <ul className="ptUL">{children}</ul>,
-                            li: ({ children }) => <li className="ptLI">{children}</li>
-                        }}
+            <div className="reviewContainer">
+                {reviewData.map((item,i) => (
+                    <CommentHandler
+                        user={item.user.username}
+                        body={postData[i].body}
+                        title={postData[i].title}
+                        key={i}
                     />
-                </div>
+                )) }
+
             </div>
+            {/*<div className="ptContainer">*/}
+
+            {/*    <div className="ptArea">*/}
+            {/*        <PortableText*/}
+            {/*            content={contentData}*/}
+            {/*            serializers={{*/}
+            {/*                ul: ({ children }) => <ul className="ptUL">{children}</ul>,*/}
+            {/*                li: ({ children }) => <li className="ptLI">{children}</li>*/}
+            {/*            }}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     );
 };
-
-
-
-function getProduct(props){
-    const PROJECT_ID = "xx2b8ubw";
-    const DATASET = "production";
-    const ID = props;
-    const QUERYA = "*%5B_id%20%3D%3D%20";
-    const QUERYB = "%5D";
-    const URL = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${QUERYA}"${ID}"${QUERYB}`;
-    //const URL = `https://xx2b8ubw.api.sanity.io/v2021-10-21/data/query/production?query=*%5B_id%20%3D%3D%20"${ID}"%5D`;
-    //const URL = 'https://xx2b8ubw.api.sanity.io/v2021-10-21/data/query/production?query=*%5B_id%20%3D%3D%20%22ec6c09a1-5063-4a7b-b775-c713437f2136%22%5D';
-    const products = fetch(URL);
-    return products.json();
-}
-
-
-
 function URLArrGen(props){
     const URLArr = [];
     props.map((i) => (
@@ -195,18 +286,15 @@ function getImgURL(props){
     const img1FileName = img1slice.slice(0, lastDashIndex) + "." + img1slice.slice(lastDashIndex + 1);
     return 'https://cdn.sanity.io/images/xx2b8ubw/production/'+ img1FileName;
 }
-
-function URLArrGen2(props){
-    const URLArr = [];
-    props.map((item, i) => (
-        URLArr.push(getImgURL2(item))
-    ))
-    return URLArr;
-}
 function getRandomInt(min, max){
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);
+}
+function getRandomFloat(){
+    const min = Math.ceil(0);
+    const max = Math.floor(9);
+    return (Math.floor(Math.random() * (max - min) + min)/10);
 }
 function getColors(props){
     const colorArr = [];
