@@ -7,7 +7,7 @@ import SwiperHandler from "@/components/SwiperHandler/SwiperHandler";
 import StarRatings from "react-star-ratings/build/star-ratings";
 import ARCHER from '../../../public/ARCHER.png';
 import Image from "next/image";
-import { LiaLocationArrowSolid } from "react-icons/lia";
+import { LiaLocationArrowSolid,LiaFacebookSquare, LiaInstagram, LiaYoutubeSquare } from "react-icons/lia";
 import CommentHandler from "@/components/CommentHandler/CommentHandler";
 
 
@@ -28,7 +28,23 @@ export default function Page() {
     const [randomNum, setRandomNum] = useState(0);
     const [randomReviews, setRandomReviews] = useState(0);
 
-    const [loading, setLoading] = useState(true);
+    const [rateLoading, setRateLoading] = useState(true);
+    const [randomLoaded, setRandomLoaded] = useState(false);
+    const [postLoading, setPostLoading] = useState(true);
+    const [commentLoading, setCommentLoading] = useState(true);
+
+    const [visibleItems, setVisibleItems] = useState(3);
+    const itemsToAdd = 3;
+
+    const loadMoreItems = () => {
+        if(reviewData.length - visibleItems === 1){
+            setVisibleItems(prevVisibleItems => prevVisibleItems + 1);
+        } else if (reviewData.length - visibleItems === 2) {
+            setVisibleItems(prevVisibleItems => prevVisibleItems + 2);
+        } else {
+            setVisibleItems(prevVisibleItems => prevVisibleItems + itemsToAdd);
+        }
+    };
 
 
     const pathname = usePathname();
@@ -117,12 +133,12 @@ export default function Page() {
 
     useEffect(() => {
         const getRandomNum = () => {
-            setLoading(true);
+            setRateLoading(true);
             const num = getRandomInt(3,5);
             const float = getRandomFloat();
             const total = num + float;
             setRandomNum(total);
-            setLoading(false);
+            setRateLoading(false);
         };
 
         getRandomNum();
@@ -130,22 +146,26 @@ export default function Page() {
 
     useEffect(() => {
         const getRandomRatingCount = () => {
-            const num = getRandomInt(1,29);
+            setRandomLoaded(false);
+            const num = getRandomInt(1,14);
             setRandomReviews(num);
+            setRandomLoaded(true);
         };
         getRandomRatingCount();
     }, []);
 
     useEffect(() => {
         const fetchReviewData = async () => {
+            setCommentLoading(true);
             try {
                 const response = await fetch("https://dummyjson.com/comments");
                 const result = await response.json();
 
-                setReviewData(result.comments.slice(0, 30 - randomReviews));
+                setReviewData(result.comments.slice(0, 15 - randomReviews));
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+            setCommentLoading(false);
         };
 
         fetchReviewData();
@@ -153,21 +173,20 @@ export default function Page() {
 
     useEffect(() => {
         const fetchCommentData = async () => {
+            setPostLoading(true);
             try {
                 const response = await fetch("https://dummyjson.com/posts");
                 const result = await response.json();
 
-                setPostData(result.posts.slice(0, 30 - randomReviews));
+                setPostData(result.posts.slice(0, 15 - randomReviews));
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+            setPostLoading(false);
         };
 
         fetchCommentData();
     }, [randomReviews]);
-
-
-
 
 // console.log(reviewData);
 
@@ -180,13 +199,15 @@ export default function Page() {
                         <LiaLocationArrowSolid className="productTopIcon"/>
                         <p className="productTopBtnText">Back to Shop</p>
                     </a>
-                    <Image
-                        src={ARCHER}
-                        alt="logo"
-                        height={100}
-                        width={100}
-                    >
-                    </Image>
+                    <a href="/">
+                        <Image
+                            src={ARCHER}
+                            alt="logo"
+                            height={100}
+                            width={100}
+                        >
+                        </Image>
+                    </a>
                 </div>
             <div className="productContainer">
                 <div className="shopImgContainer">
@@ -200,7 +221,7 @@ export default function Page() {
                     <hr className="productInfoDivider"/>
                     <div className="priceRatingContainer">
                         <h2 className="price"> ${productData.price}.00</h2>
-                        {!loading
+                        {!rateLoading
                             ? <div className="productRatingContainer">
                                 <StarRatings
                                     rating={randomNum}
@@ -212,7 +233,7 @@ export default function Page() {
                                     starSpacing="2px"
                                 />
                                 <p>{randomNum} |</p>
-                                <p>{30 - randomReviews} reviews</p>
+                                <p>{15 - randomReviews} reviews</p>
                             </div>
                             :
                             <div></div>
@@ -241,35 +262,64 @@ export default function Page() {
                             ></button>
                         ))}
                     </div>
-                    {/*<hr className="productInfoDivider"/>*/}
                     <div className="buyBtnContainer">
                         <button className="buyBtn">Buy Now</button>
                     </div>
                 </div>
             </div>
-            <div className="reviewContainer">
-                {reviewData.map((item,i) => (
-                    <CommentHandler
-                        user={item.user.username}
-                        body={postData[i].body}
-                        title={postData[i].title}
-                        key={i}
-                    />
-                )) }
+            {
+                !postLoading && !commentLoading
+                ?
+                    <div className="reviewContainer">
+                        {reviewData.length < 3
+                            ?
+                            <p className="reviewCounter">{reviewData.length}/{15-randomReviews} Reviews</p>
+                            :
+                            <p className="reviewCounter">{visibleItems}/{15-randomReviews} Reviews</p>
+                        }
+                        <hr className="reviewHeaderDivider"/>
+                        {reviewData.slice(0, visibleItems).map((item,i) => (
+                            <CommentHandler
+                                user={item.user.username}
+                                body={postData[i].body}
+                                title={postData[i].title}
+                                key={i}
+                            />
+                        )) }
+                        {visibleItems < reviewData.length && (
+                            <button className="loadBtn" onClick={loadMoreItems}>Load More</button>
+                        )}
+                    </div>
+                :
+                    <div></div>
+            }
+            <div className="footerContainer">
+                <a href="/">
+                    <Image
+                        src={ARCHER}
+                        alt="logo"
+                        height={100}
+                        width={100}
+                        className="footerLogo"
+                    >
+                    </Image>
+                </a>
+                <div className="footerIconContainer">
+                    <LiaFacebookSquare className="footerIcon"/>
+                    <LiaInstagram className="footerIcon"/>
+                    <LiaYoutubeSquare className="footerIcon"/>
+                </div>
+                <div className="phone">303-245-3390</div>
+                <div className="links">
+                    <a href="/">Home</a>
+                    <a href="/#t2">Shop</a>
+                    <a href="/#t3">Media</a>
+                    <a href="/#t4">About</a>
+                    <a href="/#t5">Contact</a>
+                </div>
 
             </div>
-            {/*<div className="ptContainer">*/}
 
-            {/*    <div className="ptArea">*/}
-            {/*        <PortableText*/}
-            {/*            content={contentData}*/}
-            {/*            serializers={{*/}
-            {/*                ul: ({ children }) => <ul className="ptUL">{children}</ul>,*/}
-            {/*                li: ({ children }) => <li className="ptLI">{children}</li>*/}
-            {/*            }}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </div>
     );
 };
@@ -316,3 +366,6 @@ function getVariantImages(data){
     const imgArr = imgObjArr[0];
     return imgArr;
 }
+// function loadMoreItems(){
+//     setVisibleItems(prevVisibleItems => prevVisibleItems + itemsToAdd);
+// };

@@ -70,7 +70,7 @@ export default function CommentHandler(props){
                     </div>
                 </div>
             </div>
-            <hr className="productInfoDivider"/>
+            <hr className="reviewDivider"/>
         </div>
     );
 };

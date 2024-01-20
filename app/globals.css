@@ -484,6 +484,7 @@ a {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
 .productDescription{
     color: #5C5140;
 }
@@ -535,6 +536,11 @@ a {
 .reviewHeaderCount{
     align-self: flex-start;
 }
+.reviewCounter{
+    margin-left: 200px;
+    margin-bottom: 20px;
+    align-self: flex-start;
+}
 .reviewHandlerContainer{
     display: flex;
 }
@@ -566,6 +572,7 @@ a {
     font-weight: bold;
     text-transform: capitalize;
 }
+
 .ratingDateContainer{
     display: flex;
     width: 750px;
@@ -579,38 +586,68 @@ a {
     width: 650px;
 }
 .commentBody h1{
-    font-size: 20px;
+
 }
 .commentBody p{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.ptContainer{
+.reviewDivider{
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+.reviewHeaderDivider{
+    width: 1000px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 -5px #141414;
+}
+.loadBtn{
+    width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #5C5140;
+    color: white;
+    margin-bottom: 20px;
+}
+.footerContainer{
+    background-color: #5C5140;
+    color: white;
+    height: 200px;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    width: 500px;
-
 }
-.ptArea{
-    height: 500px;
-    overflow-y: auto;
-}
-.ptUL {
+.footerLogo{
     position: absolute;
-    right: 0;
-    list-style-type: none;
-    padding-left: 20px;
-    width: fit-content;
-    height: 500px;
-    overflow-y: auto;
+    left: 30px;
+    top: 30px;
+}
+.footerIconContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+.phone{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+.footerIcon{
+    height: 30px;
+    width: 30px;
 }
 
-.ptUL li::before {
-    content: '\2022';
-    color: #141414;
-    font-size: 20px;
-    margin-right: 10px;
+.links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+    margin-top: 20px;
 }
-.ptLI{
-    text-align: start;
-    text-indent: -15px;
-}
+
